@@ -1,0 +1,258 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="BowlingJackpotModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Ticket">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="User_Id" Type="int" Nullable="false" />
+          <Property Name="Purchase_Date" Type="datetime" Nullable="false" />
+          <Property Name="Ticket_Amount_Id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TicketAmount">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Ticket_Amount" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="250" Nullable="false" />
+        </EntityType>
+        <EntityType Name="WeeklyPlay">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="User_Id" Type="int" Nullable="false" />
+          <Property Name="Pins" Type="int" />
+          <Property Name="Play_Date" Type="datetime" Nullable="false" />
+          <Property Name="Payout_Amount" Type="decimal" Precision="18" Scale="0" />
+        </EntityType>
+        <Association Name="FK_Ticket_ToTable_Ticket_Amount">
+          <End Role="TicketAmount" Type="Self.TicketAmount" Multiplicity="1" />
+          <End Role="Ticket" Type="Self.Ticket" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TicketAmount">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Ticket">
+              <PropertyRef Name="Ticket_Amount_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WeeklyPlay_ToTableUser">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="WeeklyPlay" Type="Self.WeeklyPlay" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WeeklyPlay">
+              <PropertyRef Name="User_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="UserFK">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Ticket" Type="Self.Ticket" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Ticket">
+              <PropertyRef Name="User_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BowlingJackpotModelStoreContainer">
+          <EntitySet Name="Ticket" EntityType="Self.Ticket" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TicketAmount" EntityType="Self.TicketAmount" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WeeklyPlay" EntityType="Self.WeeklyPlay" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Ticket_ToTable_Ticket_Amount" Association="Self.FK_Ticket_ToTable_Ticket_Amount">
+            <End Role="TicketAmount" EntitySet="TicketAmount" />
+            <End Role="Ticket" EntitySet="Ticket" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WeeklyPlay_ToTableUser" Association="Self.FK_WeeklyPlay_ToTableUser">
+            <End Role="User" EntitySet="User" />
+            <End Role="WeeklyPlay" EntitySet="WeeklyPlay" />
+          </AssociationSet>
+          <AssociationSet Name="UserFK" Association="Self.UserFK">
+            <End Role="User" EntitySet="User" />
+            <End Role="Ticket" EntitySet="Ticket" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="BowlingJackpotModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Ticket">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="User_Id" Type="Int32" Nullable="false" />
+          <Property Name="Purchase_Date" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="User" Relationship="Self.UserFK" FromRole="Ticket" ToRole="User" />
+          <Property Name="Ticket_Amount_Id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="TicketAmount" Relationship="BowlingJackpotModel.FK_Ticket_ToTable_Ticket_Amount" FromRole="Ticket" ToRole="TicketAmount" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Tickets" Relationship="Self.UserFK" FromRole="User" ToRole="Ticket" />
+          <NavigationProperty Name="WeeklyPlays" Relationship="Self.FK_WeeklyPlay_ToTableUser" FromRole="User" ToRole="WeeklyPlay" />
+        </EntityType>
+        <EntityType Name="WeeklyPlay">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="User_Id" Type="Int32" Nullable="false" />
+          <Property Name="Pins" Type="Int32" />
+          <NavigationProperty Name="User" Relationship="Self.FK_WeeklyPlay_ToTableUser" FromRole="WeeklyPlay" ToRole="User" />
+          <Property Name="Play_Date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Payout_Amount" Type="Decimal" Precision="18" Scale="0" />
+        </EntityType>
+        <Association Name="UserFK">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Ticket" Type="Self.Ticket" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Ticket">
+              <PropertyRef Name="User_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WeeklyPlay_ToTableUser">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="WeeklyPlay" Type="Self.WeeklyPlay" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WeeklyPlay">
+              <PropertyRef Name="User_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BowlingJackpotEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Tickets" EntityType="Self.Ticket" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <EntitySet Name="WeeklyPlays" EntityType="Self.WeeklyPlay" />
+          <AssociationSet Name="UserFK" Association="Self.UserFK">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Ticket" EntitySet="Tickets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WeeklyPlay_ToTableUser" Association="Self.FK_WeeklyPlay_ToTableUser">
+            <End Role="User" EntitySet="Users" />
+            <End Role="WeeklyPlay" EntitySet="WeeklyPlays" />
+          </AssociationSet>
+          <EntitySet Name="TicketAmounts" EntityType="BowlingJackpotModel.TicketAmount" />
+          <AssociationSet Name="FK_Ticket_ToTable_Ticket_Amount" Association="BowlingJackpotModel.FK_Ticket_ToTable_Ticket_Amount">
+            <End Role="TicketAmount" EntitySet="TicketAmounts" />
+            <End Role="Ticket" EntitySet="Tickets" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="TicketAmount">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Ticket_Amount" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <NavigationProperty Name="Tickets" Relationship="BowlingJackpotModel.FK_Ticket_ToTable_Ticket_Amount" FromRole="TicketAmount" ToRole="Ticket" />
+        </EntityType>
+        <Association Name="FK_Ticket_ToTable_Ticket_Amount">
+          <End Type="BowlingJackpotModel.TicketAmount" Role="TicketAmount" Multiplicity="1" />
+          <End Type="BowlingJackpotModel.Ticket" Role="Ticket" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TicketAmount">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Ticket">
+              <PropertyRef Name="Ticket_Amount_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="BowlingJackpotModelStoreContainer" CdmEntityContainer="BowlingJackpotEntities">
+          <EntitySetMapping Name="Tickets">
+            <EntityTypeMapping TypeName="BowlingJackpotModel.Ticket">
+              <MappingFragment StoreEntitySet="Ticket">
+                <ScalarProperty Name="Ticket_Amount_Id" ColumnName="Ticket_Amount_Id" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="User_Id" ColumnName="User_Id" />
+                <ScalarProperty Name="Purchase_Date" ColumnName="Purchase_Date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="BowlingJackpotModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WeeklyPlays">
+            <EntityTypeMapping TypeName="BowlingJackpotModel.WeeklyPlay">
+              <MappingFragment StoreEntitySet="WeeklyPlay">
+                <ScalarProperty Name="Payout_Amount" ColumnName="Payout_Amount" />
+                <ScalarProperty Name="Play_Date" ColumnName="Play_Date" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="User_Id" ColumnName="User_Id" />
+                <ScalarProperty Name="Pins" ColumnName="Pins" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TicketAmounts">
+            <EntityTypeMapping TypeName="BowlingJackpotModel.TicketAmount">
+              <MappingFragment StoreEntitySet="TicketAmount">
+                <ScalarProperty Name="Ticket_Amount" ColumnName="Ticket_Amount" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

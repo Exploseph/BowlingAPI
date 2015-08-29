@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>BowlingJackpot.API</name>
+    </assembly>
+    <members>
+        <member name="M:BowlingJackpot.API.Controllers.JackpotController.GetJackpot">
+            <summary>
+            Returns the current jackpot balance
+            </summary>
+            <returns>Jackpot</returns>
+        </member>
+        <member name="M:BowlingJackpot.API.Controllers.SeedDataController.PutAllData">
+            <summary>
+            Inserts test data, currently Enabled (webconfig AllowInsertDeleteOfTestData=true)
+            </summary>
+            <returns>Boolean</returns>  
+        </member>
+        <member name="M:BowlingJackpot.API.Controllers.SeedDataController.DeleteAllData">
+            <summary>
+            Deletes all data, currently Enabled (webconfig AllowInsertDeleteOfTestData=true)
+            </summary>
+            <returns>Boolean</returns>        
+        </member>
+        <member name="M:BowlingJackpot.API.Controllers.TicketAmountController.GetTicketAmount">
+            <summary>
+            Gets all Ticket Amounts
+            </summary>
+            <returns>TicketAmount</returns>
+        </member>
+        <member name="M:BowlingJackpot.API.Controllers.TicketAmountController.PostTicketAmount(BowlingJackpotModel.TicketAmount)">
+            <summary>
+            Adds a Ticket Amount.  This changes the Ticket Amount for all future Tickets.
+            </summary>
+            <param name="ticketAmount">Decimal.  Amount of all tickets going forward</param>
+            <returns>TicketAmount</returns>
+        </member>
+        <member name="M:BowlingJackpot.API.Controllers.TicketController.GetAllTickets">
+            <summary>
+            Returns all tickets purchased.
+            </summary>
+            <returns>List of class Ticket</returns>
+        </member>
+        <member name="M:BowlingJackpot.API.Controllers.TicketController.GetTicketByID(System.Int32)">
+            <summary>
+            Returns ticket by ID
+            </summary>
+            <param name="id">ID of the Ticket</param>
+            <returns>Ticket</returns>
+        </member>
+        <member name="M:BowlingJackpot.API.Controllers.TicketController.PostTicket(BowlingJackpotModel.Ticket)">
+            <summary>
+            Inserts a ticket
+            </summary>
+            <param name="ticket">The Ticket to be added</param>
+            <returns>Ticket</returns>
+        </member>
+        <member name="M:BowlingJackpot.API.Controllers.UserController.GetAllUsers">
+            <summary>
+            Returns all users
+            </summary>
+            <returns>List of class User</returns>
+        </member>
+        <member name="M:BowlingJackpot.API.Controllers.UserController.GetUserByID(System.Int32)">
+            <summary>
+            Returns a user by ID
+            </summary>
+            <param name="id">ID of the User</param>
+            <returns>User</returns>
+        </member>
+        <member name="M:BowlingJackpot.API.Controllers.UserController.PostUser(BowlingJackpotModel.User)">
+            <summary>
+            Inserts a user
+            </summary>
+            <param name="user">User to insert</param>
+            <returns>User</returns>
+        </member>
+        <member name="M:BowlingJackpot.API.Controllers.WeeklyPlayController.GetWeeklyPlays">
+            <summary>
+            Gets all weekly jackpot plays
+            </summary>
+            <returns>List of class WeeklyPlay</returns>        
+        </member>
+        <member name="M:BowlingJackpot.API.Controllers.WeeklyPlayController.PutWeeklyPlay">
+            <summary>
+            Picks the weekly bowler to roll for the jackpot. Returns the current weekly play if a bowler is already selected.
+            </summary>
+            <returns>WeeklyPlay</returns>          
+        </member>
+        <member name="M:BowlingJackpot.API.Controllers.WeeklyPlayController.PostWeeklyPlay(BowlingJackpotModel.WeeklyPlay)">
+            <summary>
+            Updates a weekly play.
+            </summary>
+            <param name="weeklyPlay">WeeklyPlay to be updated</param>
+            <returns>WeeklyPlay</returns>              
+        </member>
+    </members>
+</doc>
