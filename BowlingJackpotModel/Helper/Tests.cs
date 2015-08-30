@@ -14,11 +14,10 @@ namespace BowlingJackpotModel
         public static void InsertData()
         {
             DeleteAllData();
-
+                        
             using (BowlingJackpotRepository rep = new BowlingJackpotRepository())
             {
-                TicketAmount ticketAmount = rep.AddTicketAmount(new TicketAmount() { Ticket_Amount = 1 });
-
+                var ticketAmount = rep.GetCurrentTicketAmount();
                 foreach (var u in GetUsers())
                 {
                     var user = rep.AddUser(u);

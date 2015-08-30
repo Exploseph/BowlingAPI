@@ -203,11 +203,16 @@ namespace BowlingJackpotModel.DAL
         public Jackpot GetJackpotBalance()
         {
             var jackpot = new Jackpot();
-            var ticketsSold = context.Tickets.Sum(i => i.TicketAmount.Ticket_Amount);
-            var payouts = context.WeeklyPlays.Sum(i => i.Payout_Amount);
-            if (payouts == null)
-                payouts = 0;
-            jackpot.JackpotBalance = (Decimal)(ticketsSold - payouts);
+            if (context.Tickets.Count() > 0)
+            {
+                var ticketsSold = context.Tickets.Sum(i => i.TicketAmount.Ticket_Amount);
+                var payouts = context.WeeklyPlays.Sum(i => i.Payout_Amount);
+                if (payouts == null)
+                    payouts = 0;
+                jackpot.JackpotBalance = (Decimal)(ticketsSold - payouts);
+            }
+            else
+                jackpot.JackpotBalance = 0;
             return jackpot;
         }
 
@@ -222,9 +227,11 @@ namespace BowlingJackpotModel.DAL
         {
             context.Users.RemoveRange(context.Users);
             context.Tickets.RemoveRange(context.Tickets);
-            context.TicketAmounts.RemoveRange(context.TicketAmounts);
+            context.TicketAmounts.RemoveRange(context.TicketAmounts);            
             context.WeeklyPlays.RemoveRange(context.WeeklyPlays);
             Save();
+
+            AddTicketAmount(new TicketAmount() { Ticket_Amount = 1 });
         }
         #endregion
 
